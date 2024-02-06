@@ -20,7 +20,7 @@ int main(void)
 	while (1)
 	{
 		if(PIND & (1 << PIND0)){                // check a particular pin of port D, if condition gets true execute the if statement
-			// check is the port is D or not also check 
+			//left shift 0000 0001 with n times (n is the pin number of port) and and with actual all pin data of port D, and if true PIND0=1, if false PIND0=0
 			PORTB = sevenSegment[1];
 			_delay_ms(500);
 		}
