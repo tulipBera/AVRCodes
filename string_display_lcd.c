@@ -1,3 +1,4 @@
+//LCD_control_port = PORTD
 //RS = PORTD0
 //RW = PORTD1
 //EN = PORTD2
@@ -7,7 +8,6 @@
 #include <util/delay.h>
 
 #define LCD_data_port PORTB
-#define LCD_control_port PORTD
 
 void LCD_Command(unsigned char commnad){
 	PORTD = 0x00;
