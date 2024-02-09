@@ -29,10 +29,8 @@ void LCD_init(){
 	DDRB = 0xFF;
 	DDRD = 0xFF;
 	PORTD = 0x00;
-	LCD_Command(0x33);
-	LCD_Command(0x32);
 	LCD_Command(0x0E);
-	LCD_Command(0x01);       // clear LCD
+	LCD_Command(0x01);  
 	_delay_ms(2);
 }
 
