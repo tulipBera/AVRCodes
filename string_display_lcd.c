@@ -11,7 +11,7 @@
 
 void LCD_Command(unsigned char commnad){
 	PORTD = 0x00;
-	LCD_data_port = commnad & 0xFF;
+	LCD_data_port = commnad;
 	PORTD = 0x04;
 	_delay_ms(1);
 	PORTD = 0x00;
@@ -19,7 +19,7 @@ void LCD_Command(unsigned char commnad){
 
 void LCD_DATA(unsigned char data){
 	PORTD = 0x01;
-	LCD_data_port = data & 0xFF;
+	LCD_data_port = data;
 	PORTD = 0x05;
 	_delay_ms(1);
 	PORTD = 0x01;
