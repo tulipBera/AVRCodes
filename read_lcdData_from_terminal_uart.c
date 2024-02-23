@@ -5,18 +5,18 @@
 
 #define baud_rate 9600
 #define LCD_data_port PORTB
-
+char tx_data;
 void usart_init(void){
 	UBRRH = 0x00;
 	UBRRL = 0x33;
 	UCSRB = (1<<TXEN) | (1<<RXEN);
 	UCSRC = (1<<URSEL) | (3<<UCSZ0);
 }
-unsigned char UART_Receive(void) {
-	return UDR;
+unsigned char usart_rx(void) {
 	while (!(UCSRA & (1 << RXC)));
+	return (UDR);
 }
-/*void usart_tx(char x){
+void usart_tx(char x){
 	UDR = x;
 	while(!(UCSRA & (1<<UDRE)));
 }
@@ -25,10 +25,10 @@ unsigned char UART_Receive(void) {
 void usart_msg(const char *c){
 	while(*c != 0)
 	usart_tx(*c++);
-}*/
+}
 
 
-void LCD_Command(unsigned char command) {
+/*void LCD_Command(unsigned char command) {
 	PORTD = 0x00;
 	LCD_data_port = command;
 	PORTA = 0x04;
@@ -59,19 +59,16 @@ void LCD_print(const char *str) {
 		LCD_DATA(str[i]);
 		i++;
 	}
-}
+}*/
 
 int main(void)
 {
 	usart_init();
-	
+	usart_msg("Hi Tulip");
+	usart_tx(0x0d);
 	while (1) {
-		unsigned char received_char = UART_Receive();
-		char received_str[2];
-		received_str[0] = received_char;
-		received_str[1] = '\0';
-		LCD_print(received_str);
-		//LCD_print(0x0d);
-		_delay_ms(1000);
+		tx_data = usart_rx();
+		usart_tx(tx_data);
+		usart_tx(0x0d);
 	}
 }
