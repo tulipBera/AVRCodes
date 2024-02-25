@@ -1,34 +1,25 @@
-
 #include <avr/io.h>
 #define F_CPU 8000000UL
 #include <util/delay.h>
 
 #define baud_rate 9600
 #define LCD_data_port PORTB
+
 char tx_data;
-void usart_init(void){
+
+void usart_init(void) {
 	UBRRH = 0x00;
 	UBRRL = 0x33;
-	UCSRB = (1<<TXEN) | (1<<RXEN);
-	UCSRC = (1<<URSEL) | (3<<UCSZ0);
+	UCSRB = (1 << TXEN) | (1 << RXEN);
+	UCSRC = (1 << URSEL) | (3 << UCSZ0);
 }
+
 unsigned char usart_rx(void) {
 	while (!(UCSRA & (1 << RXC)));
-	return (UDR);
-}
-void usart_tx(char x){
-	UDR = x;
-	while(!(UCSRA & (1<<UDRE)));
+	return UDR;
 }
 
-
-void usart_msg(const char *c){
-	while(*c != 0)
-	usart_tx(*c++);
-}
-
-
-/*void LCD_Command(unsigned char command) {
+void LCD_Command(unsigned char command) {
 	PORTD = 0x00;
 	LCD_data_port = command;
 	PORTA = 0x04;
@@ -53,22 +44,22 @@ void LCD_init() {
 	_delay_ms(2);
 }
 
-void LCD_print(const char *str) {
-	unsigned char i=0;
-	while(str[i]!=0) {
-		LCD_DATA(str[i]);
-		i++;
-	}
-}*/
+void LCD_print_char(char c) {
+	LCD_DATA(c);
+}
 
-int main(void)
-{
+void LCD_print(const char *str) {
+	while (*str != '\0') {
+		LCD_DATA(*str++);
+	}
+}
+
+int main(void) {
 	usart_init();
-	usart_msg("Hi Tulip");
-	usart_tx(0x0d);
+	LCD_init();
+	
 	while (1) {
 		tx_data = usart_rx();
-		usart_tx(tx_data);
-		usart_tx(0x0d);
+		LCD_print_char(tx_data);
 	}
 }
