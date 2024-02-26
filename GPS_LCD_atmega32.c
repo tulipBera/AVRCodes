@@ -1,3 +1,6 @@
+//https://circuitdigest.com/microcontroller-projects/gps-module-interfacing-with-atmega16-32-avr-microcontroller
+
+
 #include <avr/io.h>
 #define F_CPU 8000000UL
 #include <util/delay.h>
@@ -57,10 +60,10 @@ void lcdwrite(char ch, char r) {
 	LCDPORT = ch & 0xF0;
 	RWLow;
 	if (r == 1)
-	RSHigh;
+	RSHigh;            //Set RS (Register Select) high for data mode
 	else
-	RSLow;
-	ENHigh;
+	RSLow;             //Set RS (Register Select) low for command mode
+	ENHigh;            // set enable as high for transfer data
 	_delay_ms(1);
 	ENLow;
 	_delay_ms(1);
